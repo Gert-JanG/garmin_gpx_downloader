@@ -1,4 +1,5 @@
-Garmin_GPX_Downloader 
+garmin_gpx_downloader 
+
 This program enables a user to download all GPX files from all activities present in GarminConnect. It allows users to specify filters on 'Activity Type' (-t), 'Activity Name' (-n) or with a 'start coordinate (-c) within a radius (-r) from a specific coordinate'.
 
         Filters can be applied to only take GPX files:
@@ -7,27 +8,26 @@ This program enables a user to download all GPX files from all activities presen
         - With certain activity types (-t)
         - Within a certain radius (-r) of the start location from your last recorded activity
         - Within a certain radius (-r) of a specified start location coordinate (-c)
-        Or any AND/OR combination (-f) of the above!
 
 Example uses:
 # Download all GPX's for activities
 
-# with activity_type 'running'
+with activity_type 'running'
 `python3 garmin_gpx_downloader.py -t "running"`
 
-# with the words 'vo2max' or 'antwerp' in the activity name
+with the words 'vo2max' or 'antwerp' in the activity name
 `python3 garmin_gpx_downloader.py -n "vo2max" "antwerp"`
 
-# that STARTED within 10km radius of 'the start point of your last recorded activity'
+that STARTED within 10km radius of 'the start point of your last recorded activity'
 `python3 garmin_gpx_downloader.py -r 10`
 
-# that STARTED within 3.14km radius of the given coordinate (latitude, longitude)
+that STARTED within 3.14km radius of the given coordinate (latitude, longitude)
 `python3 garmin_gpx_downloader.py -r 3.14 -c "(50.9999999, 6.767676767)"`
 
-# that have ("antwerp" OR "leuven" in the name) AND (the activity type is "running")
+that have ("antwerp" OR "leuven" in the name) AND (the activity type is "running")
 `python3 garmin_gpx_downloader.py -n "antwerp" "leuven" -t "running"`
 
-# that STARTED within 1km radius of the given coordinate (latitude, longitude) AND activity_type is 'running'
+that STARTED within 1km radius of the given coordinate (latitude, longitude) AND activity_type is 'running'
 `python3 garmin_gpx_downloader.py -r 1 -c "(51.3333333, 4.8888888888)" -t "running"`
 
 
