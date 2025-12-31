@@ -1,73 +1,94 @@
-garmin_gpx_downloader 
+# Garmin GPX Downloader
 
-This program enables a user to download all GPX files from all activities present in GarminConnect. It allows users to specify filters on `Activity Type (-t)`, `Activity Name (-n)` or with a `start coordinate (-c)` within a `radius (-r)` from a specific coordinate'.
+A small utility to download **GPX files from your Garmin Connect activities**, with flexible filtering options.
 
-Filters can be applied to only take GPX files:
-- With certain text strings in the activity name `(-n)`.
-    NOTE: When multiple strings are provided, every activity_name that contains any of the provided strings will be kept (and thus further processed)
-- With certain activity types `(-t)`
-- Within a certain radius `(-r)` of the start location from your last recorded activity
-- Within a certain radius `(-r)` of a specified start location coordinate `(-c)`
+You can filter activities by:
 
-# Example uses:
-## Download all GPX's for activities
+- **Activity type** (`-t`)
+- **Activity name** (`-n`)
+- **Start location radius** (`-r`)
+- **Specific start coordinate** (`-c`) + (`-r`)
 
-with activity_type 'running'
-    ```
-    $ python3 garmin_gpx_downloader.py -t "running"
-    ```
+---
 
-with the words 'vo2max' or 'antwerp' in the activity name
-    ```
-    $ python3 garmin_gpx_downloader.py -n "vo2max" "antwerp"
-    ```
+## Features
 
-that STARTED within 10km radius of 'the start point of your last recorded activity'
-    ```
-    $ python3 garmin_gpx_downloader.py -r 10
-    ```
+- Download GPX files from Garmin Connect
+- Filter by:
+  - Activity type (running, walking, etc.)
+  - Activity name keywords
+  - Distance from a location
+  - Distance from your last recorded activity
+- Combine multiple filters
+- Logical filtering support (`AND` / `OR`) *(WIP)*
 
-that STARTED within 3.14km radius of the given coordinate (latitude, longitude)
+---
+## Running it on Windows:
+1. Make sure a python interpreter is installed
+2. Open this directory in `Command Prompt`
+3. Create and activate python venv
+    ```bash
+        python -m venv myvenv
+        myvenv/bin/activate
     ```
-    $ python3 garmin_gpx_downloader.py -r 3.14 -c "(50.9999999, 6.767676767)"
+4. Install all requirements from `requirements.txt`
+    ```bash
+        pip install -r requirements.txt
     ```
-
-that have ("antwerp" OR "leuven" in the name) AND (the activity type is "running")
-    ```
-    $ python3 garmin_gpx_downloader.py -n "antwerp" "leuven" -t "running"
-    ```
-
-that STARTED within 1km radius of the given coordinate (latitude, longitude) AND activity_type is 'running'
-    ```
-    $ python3 garmin_gpx_downloader.py -r 1 -c "(51.3333333, 4.8888888888)" -t "running"
+5. Checkout the help or the [example use cases](#Example-Usage)
+    ```bash
+        python garmin_gpx_downloader.py --help
     ```
 
+## Filtering Rules
 
+### Activity Name (`-n`)
+- One or more strings
+- If **any** string matches, the activity is included
+- Case-insensitive
 
-Cool use: 
-Load your GPX files on this site to create a heatmap:
-`https://www.gpsheatmaps.com/generator/`
+### Activity Type (`-t`)
+Filter by activity type such as:
+- running
+- walking
+- cycling
 
+### Location Radius (`-r`)
+- Filters activities by **start location**
+- Radius is in **kilometers**
 
+### Coordinate (`-c`)
+- Used together with `-r`
+- Format: "(latitude, longitude)" 
 
+**NOTE: if (`r`) is used without specifiying a coordinate (`c`), it automatically fetches the start location of your last recorded activity**
 
+---
 
+## Example Usage
 
+```bash
+# Download all running activities
+python garmin_gpx_downloader.py -t "running"
 
+# Download activities with "vo2max" or "antwerp" in the name
+python garmin_gpx_downloader.py -n "vo2max" "antwerp"
 
+# Download activities started within 10 km of your last activity
+python garmin_gpx_downloader.py -r 10
 
+# Download activities within 3.14 km of a specific coordinate
+python garmin_gpx_downloader.py -r 3.14 -c "(50.9999999, 6.767676767)"
 
+# Name filter + activity type
+python garmin_gpx_downloader.py -n "antwerp" "leuven" -t "running"
 
+# Location filter + activity type
+python garmin_gpx_downloader.py -r 1 -c "(51.3333333, 4.8888888888)" -t "running"
+```
 
+--- 
 
+## Cool use
 
-
-
-# WIP, or behaviour not working as expected yet
-that have ("antwerp" in the name) AND (the activity type is "running") ==> (-f 'and') is default behaviour
-`python3 garmin_gpx_downloader.py -n "antwerp" -t "running" -f 'and'` 
-
-that have ("antwerp" in the name) OR (the activity type is "walking") 
-`python3 garmin_gpx_downloader.py -n "antwerp" -t "walking" -f 'or'`
-
-
+[https ://www.gpsheatmaps.com/generator/](This website) allows to upload GPX files to create a heatmap with them.
